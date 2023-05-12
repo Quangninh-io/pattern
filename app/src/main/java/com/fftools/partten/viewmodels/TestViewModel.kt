@@ -12,11 +12,11 @@ class TestViewModel(
     private val testDataState = MutableLiveData<TestDataState>()
     val testUIDataSate: LiveData<TestDataState> get() = testDataState
 
-    fun getData(name: String) {
+    fun getData(a: Int, b: Int) {
         Coroutines.io {
             runCatching {
                 emitTestDataState(isLoading = true)
-                testRepository.test(name)
+                testRepository.test(a,b)
             }.onSuccess { result ->
                 emitTestDataState(result = result)
             }.onFailure { error ->

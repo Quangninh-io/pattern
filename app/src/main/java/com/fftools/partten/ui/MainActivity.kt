@@ -14,6 +14,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModelTest: TestViewModel by viewModel()
     private val name = "BKIT"
+    private var a = 0
+    private var b = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -28,7 +30,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setData() {
-        viewModelTest.getData(name)
+        binding.btSum.setOnClickListener {
+            a = binding.etA.text.toString().toInt()
+            b = binding.etB.text.toString().toInt()
+            viewModelTest.getData(a,b)
+        }
     }
 
     private fun setupListener() {
@@ -41,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             val dataState = it ?: return@observe
             binding.progressBar.visibility = if (dataState.isLoading) View.VISIBLE else View.GONE
             dataState.result?.let { result ->
-                binding.tv.text = "$name have length = $result"
+                binding.tvResult.text = "$result"
             }?.run {
                 dataState.error?.let { error->
                     Log.d("error", error)
