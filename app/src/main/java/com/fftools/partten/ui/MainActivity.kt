@@ -7,12 +7,14 @@ import android.util.Log
 import android.view.View
 import com.fftools.partten.R
 import com.fftools.partten.databinding.ActivityMainBinding
+import com.fftools.partten.viewmodels.TestRetrofitModel
 import com.fftools.partten.viewmodels.TestViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModelTest: TestViewModel by viewModel()
+    private val viewModelRetrofit: TestRetrofitModel by viewModel()
     private val name = "BKIT"
     private var a = 0
     private var b = 0
@@ -33,12 +35,18 @@ class MainActivity : AppCompatActivity() {
         binding.btSum.setOnClickListener {
             a = binding.etA.text.toString().toInt()
             b = binding.etB.text.toString().toInt()
-            viewModelTest.getData(a,b)
+            viewModelTest.getData(a, b)
         }
     }
 
     private fun setupListener() {
-
+        viewModelRetrofit.getData()
+        viewModelRetrofit.testUIDataSate.observe(this) {
+            val dataState = it ?: return@observe
+            dataState.result?.let { result->
+                Log.d("fjdla","$result")
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -49,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             dataState.result?.let { result ->
                 binding.tvResult.text = "$result"
             }?.run {
-                dataState.error?.let { error->
+                dataState.error?.let { error ->
                     Log.d("error", error)
                 }
             }
