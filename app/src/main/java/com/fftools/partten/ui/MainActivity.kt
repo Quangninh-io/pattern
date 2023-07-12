@@ -5,17 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.fftools.partten.R
 import com.fftools.partten.databinding.ActivityMainBinding
-import com.fftools.partten.viewmodels.TestRetrofitModel
 import com.fftools.partten.viewmodels.TestViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModelTest: TestViewModel by viewModel()
-    private val viewModelRetrofit: TestRetrofitModel by viewModel()
-    private val name = "BKIT"
     private var a = 0
     private var b = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +36,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupListener() {
-        viewModelRetrofit.getData()
-        viewModelRetrofit.testUIDataSate.observe(this) {
-            val dataState = it ?: return@observe
-            dataState.result?.let { result->
-                Log.d("fjdla","$result")
-            }
-        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -56,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             binding.progressBar.visibility = if (dataState.isLoading) View.VISIBLE else View.GONE
             dataState.result?.let { result ->
                 binding.tvResult.text = "$result"
-            }?.run {
+            }?:run {
                 dataState.error?.let { error ->
                     Log.d("error", error)
                 }
