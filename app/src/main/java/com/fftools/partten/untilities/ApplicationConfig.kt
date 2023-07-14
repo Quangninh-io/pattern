@@ -12,7 +12,8 @@ class ApplicationConfig : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@ApplicationConfig)
-            modules(listOf(repositoryModule, viewModelModule))
+            modules(listOf(repositoryModule,viewModelModule))
         }
     }
+
 }
